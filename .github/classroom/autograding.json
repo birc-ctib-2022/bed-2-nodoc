@@ -1,0 +1,64 @@
+{
+    "tests": [
+        {
+            "name": "python3 src/sort_bed.py data/input.bed",
+            "setup": "python3 src/sort_bed.py data/input.bed > input-sorted.bed",
+            "run": "./.test/scripts/cmp.sh input-sorted.bed data/input-sorted.bed",
+            "input": "",
+            "output": "",
+            "comparison": "exact",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "python3 src/sort_bed.py data/large.bed",
+            "setup": "python3 src/sort_bed.py data/large.bed > large-sorted.bed",
+            "run": "./.test/scripts/cmp.sh large-sorted.bed data/large-sorted.bed",
+            "input": "",
+            "output": "",
+            "comparison": "exact",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "python3 src/merge_bed.py data/input-sorted.bed data/input-sorted.bed",
+            "setup": "python3 src/merge_bed.py data/input-sorted.bed data/input-sorted.bed > input-merged.bed",
+            "run": "./.test/scripts/cmp.sh input-merged.bed data/input-merged.bed",
+            "input": "",
+            "output": "",
+            "comparison": "exact",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "python3 src/query_bed.py data/large-sorted.bed data/query-1.txt",
+            "setup": "python3 src/query_bed.py data/large-sorted.bed data/query-1.txt > observed-1.txt",
+            "run": "./.test/scripts/cmp.sh observed-1.txt data/expected-1.txt",
+            "input": "",
+            "output": "",
+            "comparison": "exact",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "python3 src/query_bed.py data/large-sorted.bed data/query-2.txt",
+            "setup": "python3 src/query_bed.py data/large-sorted.bed data/query-2.txt > observed-2.txt",
+            "run": "./.test/scripts/cmp.sh observed-2.txt data/expected-2.txt",
+            "input": "",
+            "output": "",
+            "comparison": "exact",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "python3 src/query_bed.py data/large-sorted.bed data/query-3.txt",
+            "setup": "python3 src/query_bed.py data/large-sorted.bed data/query-3.txt > observed-3.txt",
+            "run": "./.test/scripts/cmp.sh observed-3.txt data/expected-3.txt",
+            "input": "",
+            "output": "",
+            "comparison": "exact",
+            "timeout": 10,
+            "points": 1
+        }
+    ]
+}
