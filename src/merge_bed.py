@@ -4,12 +4,10 @@ import argparse  # we use this module for option parsing. See main for details.
 
 import sys
 from typing import TextIO
-from bed import (
-    parse_line, print_line, BedLine
-)
+from bed import (parse_line, print_line, BedLine, Table)
 
 
-def read_bed_file(f: TextIO) -> list[BedLine]:
+def read_bed_file(f: TextIO):
     """Read an entire sorted bed file."""
     # Handle first line...
     line = f.readline()
@@ -29,12 +27,16 @@ def read_bed_file(f: TextIO) -> list[BedLine]:
     return res
 
 
-def merge(f1: list[BedLine], f2: list[BedLine], outfile: TextIO) -> None:
+def merge(f1, f2, outfile: TextIO):
     """Merge features and write them to outfile."""
-    # FIXME: I have work to do here!
+    j = 0
+    for i in range(len(f1)):
+        if f1[i][0] == f2[j][0] and f1[i][1] >= f2[j][1] and f1[i+1][1] <= f2[j][1]:
+            f1.insert(i, f2[j])
+            j+=1
+            
 
-
-def main() -> None:
+def main():
     """Run the program."""
     # Setting up the option parsing using the argparse module
     argparser = argparse.ArgumentParser(description="Merge two BED files")

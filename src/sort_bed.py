@@ -4,29 +4,26 @@ import argparse  # we use this module for option parsing. See main for details.
 
 import sys
 from typing import TextIO
-from bed import (
-    read_bed_file, print_line, Table
-)
+from bed import (read_bed_file, print_line, Table)
 
 
-def sort_file(table: Table) -> None:
+def sort_file(table: Table):
     """Sort each chromosome and update the table."""
     for chrom, features in table.items():
         # Here we iterate through all the chromosomes in the file.
         # You need to sort `features` with respect to chrom_start
         # and then updatte the table
-        # FIXME: sort `features`
-        table[chrom] = features  # features should be sorted here
+        table[chrom] = sorted(features, key=lambda x: x[1])  # features should be sorted here
 
 
-def print_file(table: Table, outfile: TextIO) -> None:
+def print_file(table: Table, outfile: TextIO):
     """Write the content of table to outfile."""
     for chrom in sorted(table.tbl):
         for feature in table.get_chrom(chrom):
             print_line(feature, outfile)
 
 
-def main() -> None:
+def main():
     """Run the program."""
     # Setting up the option parsing using the argparse module
     argparser = argparse.ArgumentParser(description="Sorts a BED file")
