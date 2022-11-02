@@ -28,11 +28,20 @@ def read_bed_file(f: TextIO):
 
 def merge(f1, f2, outfile: TextIO):
     """Merge features and write them to outfile."""
-    j = 0
-    for i in range(len(f1)):
-        if f1[i][0] == f2[j][0] and f1[i][1] >= f2[j][1] and f1[i+1][1] <= f2[j][1]:
-            f1.insert(i, f2[j])
-            j+=1
+    res = []
+    i,j = 0,0
+    B = 0
+    while B==0: 
+        if f1[i][0][5] <= f2[j][0][5] and f1[i][1] <= f2[j][1]:
+          res.append(f1[i])
+          i += 1
+        else:
+          res.append(f2[j])
+          j += 1
+        if i > len(f1)-1 or j > len(f2)-1:
+            B=1
+    res = res + f1[i:] + f2[j:]
+    return res
             
 
 def main():
@@ -52,7 +61,7 @@ def main():
     # With all the options handled, we just need to do the real work
     features1 = read_bed_file(args.f1)
     features2 = read_bed_file(args.f2)
-    merge(features1, features2, args.outfile)
+    print(merge(features1, features2, args.outfile))
 
 
 if __name__ == '__main__':
