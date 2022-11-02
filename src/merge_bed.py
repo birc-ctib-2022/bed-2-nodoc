@@ -28,6 +28,10 @@ def read_bed_file(f: TextIO):
 
 def merge(f1, f2, outfile: TextIO):
     """Merge features and write them to outfile."""
+    if f1 == '' or f1 == None:
+        f1 = []
+    if f2 == '' or f2 == None:
+        f2 = []
     res = []
     i,j = 0,0
     B = 0
