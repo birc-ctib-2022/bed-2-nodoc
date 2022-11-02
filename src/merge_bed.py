@@ -26,14 +26,12 @@ def read_bed_file(f: TextIO):
     return res
 
 
-def merge(f1, f2, outfile: TextIO):
+def merge(f1, f2):
     """Merge features and write them to outfile."""
-    
     if f1 == '' or f1 == None:
         f1 = []
     if f2 == '' or f2 == None:
         f2 = []
-    
     res = []
     i,j = 0,0
     B = 0
@@ -67,7 +65,8 @@ def main():
     # With all the options handled, we just need to do the real work
     features1 = read_bed_file(args.f1)
     features2 = read_bed_file(args.f2)
-    print(merge(features1, features2, args.outfile))
+    for line in merge(features1, features2):
+        print_line(line, args.outfile)
 
 
 if __name__ == '__main__':
