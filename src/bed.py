@@ -18,7 +18,7 @@ BedLine = NamedTuple("BedLine", [
 ])
 
 
-def parse_line(line: str) -> BedLine:
+def parse_line(line: str):
     """Parse a single line from a BED file (with four columns).
 
     >>> parse_line('chr1   20_100  20_101  foo')
@@ -30,11 +30,11 @@ def parse_line(line: str) -> BedLine:
     """
     chrom, start, end, name = line.split()  # split on any white-space
     bed_line = BedLine(chrom, int(start), int(end), name)
-    assert bed_line.chrom_start + 1 == bed_line.chrom_end
+    # assert bed_line.chrom_start + 1 == bed_line.chrom_end
     return bed_line
 
 
-def print_line(line: BedLine, f: TextIO) -> None:
+def print_line(line: BedLine, f: TextIO):
     """Prints line to the stream f as a BED line."""
     print(line.chrom, line.chrom_start,
           line.chrom_end, line.name, file=f, sep='\t')
@@ -43,30 +43,30 @@ def print_line(line: BedLine, f: TextIO) -> None:
 class Table:
     """Table containing bed-lines."""
 
-    tbl: dict[str, list[BedLine]]
+    tbl: dict([])
 
-    def __init__(self) -> None:
+    def __init__(self):
         """Create a new table."""
         self.tbl = defaultdict(lambda: [])
 
-    def add_line(self, line: BedLine) -> None:
+    def add_line(self, line: BedLine):
         """Add line to the table."""
         self.tbl[line.chrom].append(line)
 
-    def get_chrom(self, chrom: str) -> list[BedLine]:
+    def get_chrom(self, chrom: str):
         """Get all the lines that sits on chrom."""
         return self.tbl[chrom]
 
-    def items(self) -> ItemsView[str, list[BedLine]]:
+    def items(self):
         """Get keys and values in the table."""
         return self.tbl.items()
 
-    def __setitem__(self, chrom: str, features: list[BedLine]) -> None:
+    def __setitem__(self, chrom: str, features):
         """Update features for a chromosome."""
         self.tbl[chrom] = features
 
 
-def read_bed_file(f: TextIO) -> Table:
+def read_bed_file(f: TextIO):
     """Read a BED file into a query.Table and return it."""
     table = Table()
     for line in f:

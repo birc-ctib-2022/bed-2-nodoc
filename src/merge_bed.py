@@ -1,15 +1,12 @@
 """Tool for cleaning up a BED file."""
 
 import argparse  # we use this module for option parsing. See main for details.
-
 import sys
 from typing import TextIO
-from bed import (
-    parse_line, print_line, BedLine
-)
+from bed import (parse_line, print_line, BedLine, Table)
 
 
-def read_bed_file(f: TextIO) -> list[BedLine]:
+def read_bed_file(f: TextIO):
     """Read an entire sorted bed file."""
     # Handle first line...
     line = f.readline()
@@ -29,12 +26,29 @@ def read_bed_file(f: TextIO) -> list[BedLine]:
     return res
 
 
-def merge(f1: list[BedLine], f2: list[BedLine], outfile: TextIO) -> None:
+def merge(f1, f2):
     """Merge features and write them to outfile."""
-    # FIXME: I have work to do here!
+    if f1 == '' or f1 == None:
+        f1 = []
+    if f2 == '' or f2 == None:
+        f2 = []
+    res = []
+    i,j = 0,0
+    B = 0
+    while B==0: 
+        if f1[i][0][-1] <= f2[j][0][-1] and f1[i][1] <= f2[j][1]:
+          res.append(f1[i])
+          i += 1
+        else:
+          res.append(f2[j])
+          j += 1
+        if i > len(f1)-1 or j > len(f2)-1:
+            B=1
+    res = res + f1[i:] + f2[j:]
+    return res
+            
 
-
-def main() -> None:
+def main():
     """Run the program."""
     # Setting up the option parsing using the argparse module
     argparser = argparse.ArgumentParser(description="Merge two BED files")
@@ -51,7 +65,8 @@ def main() -> None:
     # With all the options handled, we just need to do the real work
     features1 = read_bed_file(args.f1)
     features2 = read_bed_file(args.f2)
-    merge(features1, features2, args.outfile)
+    for line in merge(features1, features2):
+        print_line(line, args.outfile)
 
 
 if __name__ == '__main__':

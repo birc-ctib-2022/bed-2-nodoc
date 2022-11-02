@@ -1,4 +1,3 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-c66648af7eb3fe8bc4f294546bfd86ef473780cde1dea487d3c4ff354943c9ae.svg)](https://classroom.github.com/online_ide?assignment_repo_id=9114152&assignment_repo_type=AssignmentRepo)
 # Processing BED files (Part 2)
 
 If our BED files are sorted, we should be able to extract regions in logarithmic time instead of linear time, if we use binary search instead of linear search.
@@ -60,7 +59,17 @@ Once you have implemented a lower bound search for the start of the range, imple
 
 *How do you use binary search to find the lower bound of a number? How did you have to modify the binary search algorithm?*
 
+# Awnser:
+I made my code so once i hit inside the interval i start scanning up/downstream (until reaching upper lower/bound) while appending features the to a new list along the way (which is then returned).
+
 *Would anything be more difficult if the features covered ranges instead of single nucleotides (like real BED files)? What could go wrong, if anything?*
 
+# Awnser:
+I guess we could have a region overlapping each end of the interval. In that case we could fix this by adding a similar 'start <= pos < end' for both ends of the interval. 
+
 *We wrote a tool for merging two BED files, but what if we had a bunch of them? What would the complexity be if we merged them in, one at a time? What would the complexity be if we merged all of the files at the same time?*
+
+# Awnser:
+Merging one at a time can be done in O(n + m) (given that they are sorted).
+That will then give us O(n + m) times the number of files (O((n+m)z) where z is the number of files). Merging all at the same time will still just require one scan so i O(n + m).
 
