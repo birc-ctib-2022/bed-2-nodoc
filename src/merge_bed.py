@@ -36,7 +36,7 @@ def merge(f1, f2):
     i,j = 0,0
     B = 0
     while B==0: 
-        if f1[i][0][5] <= f2[j][0][5] and f1[i][1] <= f2[j][1]:
+        if f1[i][0][-1] <= f2[j][0][-1] and f1[i][1] <= f2[j][1]:
           res.append(f1[i])
           i += 1
         else:
