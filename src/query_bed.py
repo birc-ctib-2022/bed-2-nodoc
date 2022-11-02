@@ -8,8 +8,7 @@ from bed import (read_bed_file, print_line, BedLine)
 
 
 def extract_region(features, start: int, end: int):
-    """Extract region chrom[start:end] and write it to outfile."""
-    
+
     # Binary search:
     hi, lo = len(features), 0
     match = None
@@ -29,12 +28,12 @@ def extract_region(features, start: int, end: int):
     downstream = []
     if match != None:
         k=0
-        while match-k >= 0:
+        while match-k >= 0 and features[match-k][1] == features[mid][1]:
             if start <= features[match-k][1] < end:  # or start <= features[match-k][2] < end:?
                 upstream.append(features[match-k])
             k+=1
         k=1
-        while match+k <= len(features)-1:
+        while match+k <= len(features)-1 and features[match+k][1] == features[mid][1]:
             if start <= features[match+k][1] < end:  # or start <= features[match+k][2] < end:?
                 downstream.append(features[match+k])
             k+=1
