@@ -13,7 +13,7 @@ def sort_file(table: Table):
         # Here we iterate through all the chromosomes in the file.
         # You need to sort `features` with respect to chrom_start
         # and then updatte the table
-        table[chrom] = sorted(features, key=lambda x: x[1])  # features should be sorted here
+        table[chrom] = sorted(features, key=lambda x: (x[1], x[2]))  # features should be sorted here
 
 
 def print_file(table: Table, outfile: TextIO):

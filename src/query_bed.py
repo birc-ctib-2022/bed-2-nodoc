@@ -9,37 +9,38 @@ from bed import (read_bed_file, print_line, BedLine)
 
 def extract_region(features, start: int, end: int):
     """Extract region chrom[start:end] and write it to outfile."""
-    upper, lower = len(features), 0
-    match =  None
-    max_runs = math.ceil(math.log2(len(features)+1))
-    for i in range(max_runs):
-        mid = lower + (upper - lower) // 2
-        if start <= features[mid][1] and features[mid][2] <= end:
+    
+    # Binary search:
+    hi, lo = len(features), 0
+    match = None
+    B = 0 
+    while lo < hi and B == 0:
+        mid = (lo + hi) // 2
+        if start <= features[mid][1] < end:
             match = mid
-            break
+            B=1
         elif start > features[mid][1]:
-            lower = mid
-        elif start < features[mid][1]:
-            upper = mid
+            lo = mid + 1
+        else:
+            hi = mid
+
     positions = []
     upstream = []
     downstream = []
     if match != None:
-        k=1
-        while match-k >= 0 and start <= features[match-k][1]:
-            if features[match-k][2] <= end:
+        k=0
+        while match-k >= 0:
+            if start <= features[match-k][1] < end:  # or start <= features[match-k][2] < end:?
                 upstream.append(features[match-k])
             k+=1
         k=1
-        while match+k <= len(features)-1 and start <= features[match+k][1]:
-            if features[match+k][2] <= end:
+        while match+k <= len(features)-1:
+            if start <= features[match+k][1] < end:  # or start <= features[match+k][2] < end:?
                 downstream.append(features[match+k])
             k+=1
         positions = upstream[::-1]
-        positions.append(features[mid])
         positions.extend(downstream)
-        
-    return positions  # FIXME: We want the actual region, not an empty list!
+    return positions
 
 
 def main() -> None:
@@ -62,6 +63,7 @@ def main() -> None:
     # With all the options handled, we just need to do the real work
     table = read_bed_file(args.bed)
     sort_file(table)
+
     for query in args.query:
         chrom, start, end = query.split()
         # Extract the region from the chromosome, using your extract_region()
